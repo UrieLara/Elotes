@@ -4,6 +4,7 @@ public class PatoVuelo : MonoBehaviour
 {
     public Rigidbody2D rb;
     public Animator anim;
+
     public float fuerza = 5f;
 
     Vector2 direccion;
@@ -11,12 +12,16 @@ public class PatoVuelo : MonoBehaviour
     enum TipoVuelo { Recto, Arriba, Diagonal }
     TipoVuelo tipoVuelo;
 
+    enum TipoPato { Rojo, Azul, Negro }
+    TipoPato tipoPato;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
 
         tipoVuelo = (TipoVuelo)Random.Range(0, 3);
+        tipoPato = (TipoPato)Random.Range(0, 3);
 
         float posX, posY;
 
@@ -42,12 +47,12 @@ public class PatoVuelo : MonoBehaviour
                 break;
         }
 
-        anim.SetBool("Arriba", tipoVuelo == TipoVuelo.Arriba);
-        anim.SetBool("Diagonal", tipoVuelo == TipoVuelo.Diagonal);
+        anim.SetInteger("TipoVuelo", (int)tipoVuelo);
 
         rb.velocity = direccion.normalized * fuerza;
 
-        if(gameObject == null) return; 
-            Destroy(gameObject, 10f);
+        if(GameManager.Instance != null && GameManager.Instance.GameTimer > 0f)
+                Destroy(gameObject, 10f);
     }
+
 }

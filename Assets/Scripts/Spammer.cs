@@ -3,16 +3,16 @@ using UnityEngine;
 
 public class Spammer : MonoBehaviour
 {
-    public GameObject[] bolsaDePatos;
+    public GameObject[] patoPrefabs;
     public GameObject Verdura;
     public AudioSource audioSrc_elote;
     public AudioSource audioSrc_pato;
 
     [Header("Tiempo entre patos")]
-    [SerializeField] float tiempoEntrePatos = 2f;
+    [SerializeField] float tiempoEntrePatos = 3f;
 
     [Header("Tiempo entre verduras")]
-    [SerializeField] float tiempoEntreVerduras = 1f;
+    [SerializeField] float tiempoEntreVerduras = 2f;
 
     void Start()
     {
@@ -27,7 +27,7 @@ public class Spammer : MonoBehaviour
         while (GameManager.Instance != null && GameManager.Instance.GameTimer > 0f)
         {
             Instantiate(Verdura);
-            GameManager.Instance?.AddElotes(1);
+            GameManager.Instance?.AddTargets(1);
             audioSrc_elote?.Play();
 
             yield return new WaitForSeconds(tiempoEntreVerduras);
@@ -40,8 +40,9 @@ public class Spammer : MonoBehaviour
 
         while (GameManager.Instance != null && GameManager.Instance.GameTimer > 0f)
         {
-            Instantiate(bolsaDePatos[Random.Range(0, bolsaDePatos.Length)]);
-            GameManager.Instance?.AddPatos(1);
+            Instantiate(patoPrefabs[Random.Range(0, patoPrefabs.Length)]);
+
+            GameManager.Instance?.AddTargets(1);
             audioSrc_pato?.Play();
 
             yield return new WaitForSeconds(tiempoEntrePatos);

@@ -14,7 +14,7 @@ public class UI : MonoBehaviour
     public Button exitBtn;
 
     string scoreString = "";
-    string elotesString = "";
+    string targetsString = "";
 
     bool gameOverShown = false;
 
@@ -30,7 +30,7 @@ public class UI : MonoBehaviour
         TextTime();
         TextScore();
 
-        elotesString = GameManager.Instance.CantElotes.ToString();
+        targetsString = GameManager.Instance.CantTargets.ToString();
         scoreString = GameManager.Instance.Score.ToString();
 
         if (GameManager.Instance.GameTimer <= 0 && !gameOverShown)
@@ -43,7 +43,7 @@ public class UI : MonoBehaviour
 
     void ShowGameOver()
     {
-        textGameOver.text = "Game Over " + scoreString + "/" + elotesString;
+        textGameOver.text = "Game Over " + scoreString + "/" + targetsString;
         textGameOver.enabled = true;
 
         restartBtn.gameObject.SetActive(true);

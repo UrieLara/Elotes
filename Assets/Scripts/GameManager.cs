@@ -14,8 +14,7 @@ public class GameManager : MonoBehaviour
     public event Action<int> OnCantPatosChanged;
 
     [SerializeField] int score = 0;
-    [SerializeField] int cantElotes = 1;
-    [SerializeField] int cantPatos = 0;
+    [SerializeField] int cantTargets = 1;
 
     public int Score
     {
@@ -23,16 +22,10 @@ public class GameManager : MonoBehaviour
         private set { if (score == value) return; score = value; OnScoreChanged?.Invoke(score); }
     }
 
-    public int CantElotes
+    public int CantTargets
     {
-        get => cantElotes;
-        private set { if (cantElotes == value) return; cantElotes = value; OnCantElotesChanged?.Invoke(cantElotes); }
-    }
-
-    public int CantPatos
-    {
-        get => cantPatos;
-        private set { if (cantPatos == value) return; cantPatos = value; OnCantPatosChanged?.Invoke(cantPatos); }
+        get => cantTargets;
+        private set { if (cantTargets == value) return; cantTargets = value; OnCantElotesChanged?.Invoke(cantTargets); }
     }
 
     private void Awake()
@@ -50,13 +43,12 @@ public class GameManager : MonoBehaviour
     }
 
     public void AddScore(int amount = 1) => Score += Mathf.Max(0, amount);
-    public void AddElotes(int amount = 1) => CantElotes += Mathf.Max(0, amount);
-    public void AddPatos(int amount = 1) => CantPatos += Mathf.Max(0, amount);
+    public void AddTargets(int amount = 1) => CantTargets += Mathf.Max(0, amount);
 
     public void ResetGame()
     {
         Score = 0;
-        CantElotes = 0;
+        CantTargets = 0;
         GameTimer = 35f;
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
