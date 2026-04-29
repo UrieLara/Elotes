@@ -1,13 +1,15 @@
 using System;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    const float MAX_GAME_TIMER = 35f;
     public static GameManager Instance { get; private set; }
 
     public AudioSource audioSrc_start = null;
-    public float GameTimer = 35f;
+    public float GameTimer = MAX_GAME_TIMER;
 
     public event Action<int> OnScoreChanged;
     public event Action<int> OnCantElotesChanged;
@@ -49,9 +51,9 @@ public class GameManager : MonoBehaviour
     {
         Score = 0;
         CantTargets = 0;
-        GameTimer = 35f;
+        GameTimer = MAX_GAME_TIMER;
 
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneManager.LoadScene("Level1");
     }
 
     public void QuitGame()

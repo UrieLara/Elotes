@@ -8,11 +8,13 @@ public class Spammer : MonoBehaviour
     public AudioSource audioSrc_elote;
     public AudioSource audioSrc_pato;
 
+    const float tiempoParaIniciar = 30f;
+
     [Header("Tiempo entre patos")]
-    [SerializeField] float tiempoEntrePatos = 3f;
+    [SerializeField] float tiempoEntrePatos = 5f;
 
     [Header("Tiempo entre verduras")]
-    [SerializeField] float tiempoEntreVerduras = 2f;
+    [SerializeField] float tiempoEntreVerduras = 5f;
 
     void Start()
     {
@@ -22,9 +24,11 @@ public class Spammer : MonoBehaviour
 
     IEnumerator SpawnVerduras()
     {
-        yield return new WaitForSeconds(6f);
+        yield return new WaitUntil(() => GameManager.Instance != null && GameManager.Instance.GameTimer <= tiempoParaIniciar);
 
-        while (GameManager.Instance != null && GameManager.Instance.GameTimer > 0f)
+        yield return new WaitForSeconds(1f);
+
+        while (GameManager.Instance != null && GameManager.Instance.GameTimer > 1f)
         {
             Instantiate(Verdura);
             GameManager.Instance?.AddTargets(1);
@@ -36,9 +40,9 @@ public class Spammer : MonoBehaviour
 
     IEnumerator SpawnPatos()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitUntil(() => GameManager.Instance != null && GameManager.Instance.GameTimer <= tiempoParaIniciar);
 
-        while (GameManager.Instance != null && GameManager.Instance.GameTimer > 0f)
+        while (GameManager.Instance != null && GameManager.Instance.GameTimer > 1f)
         {
             Instantiate(patoPrefabs[Random.Range(0, patoPrefabs.Length)]);
 

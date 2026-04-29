@@ -3,7 +3,8 @@ using UnityEngine;
 public class PatoVuelo : MonoBehaviour
 {
     public Rigidbody2D rb;
-    public Animator anim;
+     Animator anim;
+     SpriteRenderer sr;
 
     public float fuerza = 5f;
 
@@ -19,33 +20,55 @@ public class PatoVuelo : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        sr = GetComponent<SpriteRenderer>();
 
         tipoVuelo = (TipoVuelo)Random.Range(0, 3);
         tipoPato = (TipoPato)Random.Range(0, 3);
 
-        float posX, posY;
+        float posX = 0, posY = 0;
+        float rd = 0;
 
         switch (tipoVuelo)
         {
             case TipoVuelo.Recto:
-                posY = Random.Range(-1f, 3f);
-                direccion = new Vector2(1, 0);
-                transform.position = new Vector2(-8f, posY);
+                rd = (Random.value > 0.5f) ? 1 : -1;
+                direccion = new Vector2(rd, 0);
+
+                if (rd > 0)
+                {
+                    posX = -10f;
+                }
+                else
+                {
+                    posX = 10f;
+                    sr.flipX = true;
+                }
+
+                posY = Random.Range(0f, 3f);      
                 break;
 
             case TipoVuelo.Arriba:
-                posX = Random.Range(-6f, 6f);
                 direccion = new Vector2(0, 1);
-                transform.position = new Vector2(posX, -8f);
+
+                posX = Random.Range(-6f, 6f);
+                posY = -3f;
                 break;
 
             case TipoVuelo.Diagonal:
-                posY = Random.Range(-1f, 3f);
+                rd = (Random.value > 0.5f) ? 1 : -1;
+                direccion = new Vector2(rd, 1);
+
                 posX = Random.Range(-6f, 6f);
-                direccion = new Vector2(1, 1);
-                transform.position = new Vector2(-8f, posY);
+                posY = -3f;
+
+                if (rd < 0)
+                {
+                    sr.flipX = true;
+                }
                 break;
         }
+
+        transform.position = new Vector2(posX, posY);
 
         anim.SetInteger("TipoVuelo", (int)tipoVuelo);
 

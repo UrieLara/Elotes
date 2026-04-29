@@ -170,6 +170,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: Shooted
     m_EventTreshold: 0
+  - m_ConditionMode: 6
+    m_ConditionEvent: TipoVuelo
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -2454594718567197253}
   m_Solo: 0

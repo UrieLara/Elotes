@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 5114834157276267405}
   - component: {fileID: 5878319803402067280}
   - component: {fileID: 1441014290917191480}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: elote
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -212,6 +212,7 @@ MonoBehaviour:
   col: {fileID: 4205742828178952301}
   animator: {fileID: 8411970152231210609}
   audio_popcorn: {fileID: 1441014290917191480}
+  audio_duck: {fileID: 0}
 --- !u!82 &1441014290917191480
 AudioSource:
   m_ObjectHideFlags: 0

@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 8143866638019562923}
   - component: {fileID: 6319642283419634852}
   - component: {fileID: 3424366892919277574}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PatoRojo
   m_TagString: pato
   m_Icon: {fileID: 0}
@@ -125,11 +125,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 6786093761147064290}
-  anim: {fileID: 0}
-  rojo: {fileID: 0}
-  azul: {fileID: 0}
-  negro: {fileID: 0}
-  fuerza: 1
+  fuerza: 1.5
 --- !u!114 &9216756686428924887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,7 +169,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &8143866638019562923
 BoxCollider2D:
   m_ObjectHideFlags: 0
