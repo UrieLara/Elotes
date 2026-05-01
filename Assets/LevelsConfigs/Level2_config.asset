@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78f4fdf0051ce0242a7ee16a54f8dbab, type: 3}
+  m_Name: Level2_config
+  m_EditorClassIdentifier: 
+  patoPrefabs:
+  - {fileID: 3243485326460975378, guid: d922356840b5ed742910db1923718892, type: 3}
+  - {fileID: 2460717307628784352, guid: 76ea0d0df8e07e648b0a4043e220bd8a, type: 3}
+  - {fileID: 7007834221444463827, guid: a4bd292ca78b7d34883f64182a9c9452, type: 3}
+  patoFuerza: 8
+  verduraPrefab:
+  - {fileID: 8200764050268880720, guid: 539eb3731bdf89b41b57f76c96adb33c, type: 3}
+  - {fileID: 8200764050268880720, guid: c64cce24548c05a4a9914b8c7f3a13fb, type: 3}
+  verduraFuerzaMin: 2
+  verduraFuerzaMax: 3.5
+  tiempoEntrePatos: 1
+  tiempoEntreVerduras: 2

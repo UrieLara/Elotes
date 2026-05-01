@@ -1,63 +1,179 @@
 using System;
-using System.Runtime.CompilerServices;
+using System.Collections;
+using System.Diagnostics;
+using System.Reflection;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+public enum GameState
+{
+    Menu, 
+    Ready,
+    Playing,
+    GameOver
+}
+
 public class GameManager : MonoBehaviour
 {
-    const float MAX_GAME_TIMER = 35f;
     public static GameManager Instance { get; private set; }
+    public GameState State { get; private set; }
 
-    public AudioSource audioSrc_start = null;
-    public float GameTimer = MAX_GAME_TIMER;
+    public LevelConfig[] levelsConfig;
+    public int currentLevelIndex;
 
-    public event Action<int> OnScoreChanged;
-    public event Action<int> OnCantElotesChanged;
-    public event Action<int> OnCantPatosChanged;
+    public LevelConfig currentLevelConfig;
+
+
+
+    const float MAX_GAME_TIMER = 30f;
+    
+
+    public float GameTimer { get; private set; }
+    public bool IsGameOver => GameTimer <= 0;
+
+
+    public int Score => score;
+    public int Patos => patosEliminados;
+    public int Verduras => verdurasEliminadas;
+    public int TotalTargets => cantTargets;
 
     [SerializeField] int score = 0;
-    [SerializeField] int cantTargets = 1;
+    [SerializeField] int patosEliminados = 0;
+    [SerializeField] int verdurasEliminadas = 0;
+    [SerializeField] int cantTargets = 0;
 
-    public int Score
-    {
-        get => score;
-        private set { if (score == value) return; score = value; OnScoreChanged?.Invoke(score); }
-    }
 
-    public int CantTargets
-    {
-        get => cantTargets;
-        private set { if (cantTargets == value) return; cantTargets = value; OnCantElotesChanged?.Invoke(cantTargets); }
-    }
+
+    public event Action OnStateChanged;
+    public event Action<float> OnTimerChanged;
+    public event Action OnGameOver;
 
     private void Awake()
     {
-        if (Instance == null) { Instance = this; DontDestroyOnLoad(gameObject); }
-        else { Destroy(gameObject); }
-    }
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
 
-    void Start() => audioSrc_start?.Play();
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
+    }
 
     void Update()
     {
-        GameTimer -= Time.deltaTime;
-        if (GameTimer < 0) GameTimer = 0;
+        if (IsGameOver) return;
+
+        if (GameTimer > 0)
+        {
+            GameTimer -= Time.deltaTime;
+            OnTimerChanged?.Invoke(GameTimer);
+
+            if (GameTimer <= 0)
+            {
+                GameTimer = 0;
+                OnStateChanged?.Invoke(); // Avisar que el tiempo acabó
+            }
+        }
     }
 
-    public void AddScore(int amount = 1) => Score += Mathf.Max(0, amount);
-    public void AddTargets(int amount = 1) => CantTargets += Mathf.Max(0, amount);
-
-    public void ResetGame()
+    public void AddScore(TargetType targetType, int points)
     {
-        Score = 0;
-        CantTargets = 0;
+        score += points;
+        if (targetType == TargetType.Pato) patosEliminados++;
+        else if (targetType == TargetType.Verdura) verdurasEliminadas++;
+
+        OnStateChanged?.Invoke(); // Avisar a la UI que algo cambió
+    }
+
+    public void AddTargets(int amount = 1)
+    {
+        cantTargets += amount;
+        OnStateChanged?.Invoke();
+    }
+
+    private void Reset()
+    {
+        score = patosEliminados = verdurasEliminadas = cantTargets = 0;
+        GameTimer = 0;
+        State = GameState.Ready;
+    }
+
+    public void StartLevel()
+    {
+        StartCoroutine(LevelRoutine());
+    }
+
+    public void PlayLevel(int index)
+    {
+        currentLevelIndex = index;
+        currentLevelConfig = levelsConfig[currentLevelIndex - 1];
+
+        Reset();
+        SceneManager.LoadScene(index);
+    }
+
+    public void RestartLevel()
+    {
+        Reset();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void NextLevel()
+    {
+        int next = currentLevelIndex + 1;
+
+        if (next <= levelsConfig.Length)
+        {
+            PlayLevel(next);
+        }
+    }
+    IEnumerator LevelRoutine()
+    {
+        State = GameState.Ready;
+        OnStateChanged?.Invoke();
+        yield return new WaitForSeconds(5f);
+
+        State = GameState.Playing;
         GameTimer = MAX_GAME_TIMER;
+        OnStateChanged?.Invoke();
 
-        SceneManager.LoadScene("Level1");
+        while (GameTimer > 0)
+        {
+            GameTimer -= Time.deltaTime;
+            OnTimerChanged?.Invoke(GameTimer);
+
+            yield return null;
+        }
+
+        GameTimer = 0;
+        State = GameState.GameOver;
+        OnStateChanged?.Invoke();
+        OnGameOver?.Invoke();
     }
 
-    public void QuitGame()
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        Application.Quit();
+        if (scene.buildIndex == 0)
+        {
+            State = GameState.Menu;
+            OnStateChanged?.Invoke();
+            return;
+        }
+
+        // Cancelar cualquier coroutine anterior antes de iniciar una nueva
+        StopAllCoroutines();
+        Reset();
+        StartCoroutine(LevelRoutine());
+    }
+
+    public void QuitGame() => Application.Quit();
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 }

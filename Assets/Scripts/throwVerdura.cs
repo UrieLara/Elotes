@@ -1,26 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class throwElote : MonoBehaviour
+public class throwVerdura : MonoBehaviour
 {
+    LevelConfig config;
+
     public Rigidbody2D rb;
     Vector2 throwForce;
     void Start()
     {
+        config = GameManager.Instance.currentLevelConfig;
+
         PosAleatX();
         throwIt();
 
-        if(gameObject!=null)
-        {
-            Destroy(gameObject, 5f);
-        }
+        Destroy(gameObject, 5f);
     }
-    void Update()
-    {
-        
-    }
-
     void PosAleatX()
     {
         float posX = Random.Range(-5.5f, 8f);
@@ -28,7 +22,7 @@ public class throwElote : MonoBehaviour
     }
 void throwIt()
     {
-        throwForce = new Vector2(Random.Range(-0.2f, 0.2f), Random.Range(2f, 3f));
+        throwForce = new Vector2(Random.Range(-0.2f, 0.2f), Random.Range(config.verduraFuerzaMin, config.verduraFuerzaMax));
         rb.AddForce(throwForce, ForceMode2D.Impulse);
         rb.angularVelocity = Random.Range(-360, 360);
     }

@@ -1,57 +1,63 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Shooted : MonoBehaviour
 {
     public Rigidbody2D rb;
     public Collider2D col;
     public Animator animator;
-    public AudioSource audio_popcorn;
-    public AudioSource audio_duck;
-    void Start()
-    {
-        
-    }
+    private AudioSource audioSrc;
 
-    // Update is called once per frame
-    void Update()
+    private Target target;
+
+    public FloatingText floatingTextPrefab;
+
+    private void Awake()
     {
+        target = GetComponent<Target>();
+        audioSrc = GetComponent<AudioSource>();
 
     }
 
     private void OnMouseDown()
     {
-        rb.freezeRotation = true;
-        gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
+        if (GameManager.Instance.IsGameOver) return;
+
+        if (EventSystem.current.IsPointerOverGameObject()) return;
 
         col.enabled = false;
-
         animator.SetTrigger("Shooted");
-        rb.drag = 5f;
 
-        if (CompareTag("elote"))
-        {
-            audio_popcorn?.Play();
-        }
+        HandlePhysics();
 
-        if (CompareTag("pato"))
-        {
-            audio_duck?.Play();
-        }
+        if (target.hitSound != null)
+            audioSrc.PlayOneShot(target.hitSound);
 
-        GameManager.Instance?.AddScore(1);
-        rb.gravityScale = 1f;
+        FloatingTextShow();
 
-
-        if (CompareTag("elote") || CompareTag("pato"))
-        {
-            if (gameObject != null)
-                Destroy(gameObject, 10f);
-
-        }
+        GameManager.Instance.AddScore(target.type, target.points);
+        Destroy(gameObject, 5f);
         
+    }
+
+    private void FloatingTextShow()
+    {
+        Vector3 mousePos = Input.mousePosition;
+        mousePos.z = -Camera.main.transform.position.z;
+
+        Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
+        worldPos.z = 0f;
+
+        FloatingText ft = Instantiate(floatingTextPrefab, worldPos, Quaternion.identity);
+        ft.Init(target.points);
+    }
+
+    private void HandlePhysics()
+    {
+        rb.freezeRotation = true;
+        transform.rotation = Quaternion.identity; //Quaternion.Euler(0, 0, 0);
+        rb.drag = 5f;
+        rb.gravityScale = 1f;
     }
 
 }

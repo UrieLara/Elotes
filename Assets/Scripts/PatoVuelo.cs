@@ -1,12 +1,15 @@
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 public class PatoVuelo : MonoBehaviour
 {
+    LevelConfig config;
+
     public Rigidbody2D rb;
      Animator anim;
      SpriteRenderer sr;
 
-    public float fuerza = 5f;
+    float fuerza;
 
     Vector2 direccion;
 
@@ -18,9 +21,13 @@ public class PatoVuelo : MonoBehaviour
 
     void Start()
     {
+        config = GameManager.Instance.currentLevelConfig;
+
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
+
+        fuerza = config.patoFuerza;
 
         tipoVuelo = (TipoVuelo)Random.Range(0, 3);
         tipoPato = (TipoPato)Random.Range(0, 3);
@@ -74,8 +81,7 @@ public class PatoVuelo : MonoBehaviour
 
         rb.velocity = direccion.normalized * fuerza;
 
-        if(GameManager.Instance != null && GameManager.Instance.GameTimer > 0f)
-                Destroy(gameObject, 10f);
+        Destroy(gameObject, 10f);
     }
 
 }

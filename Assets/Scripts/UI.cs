@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
@@ -9,62 +7,75 @@ public class UI : MonoBehaviour
     public TextMeshProUGUI textTime;
     public TextMeshProUGUI textScore;
     public TextMeshProUGUI textGameOver;
+    public TextMeshProUGUI textTargets;
 
+    public Button nextLevel;
     public Button restartBtn;
     public Button exitBtn;
 
-    string scoreString = "";
-    string targetsString = "";
-
-    bool gameOverShown = false;
-
     private void Start()
     {
-        textGameOver.enabled = false;
+        // Suscribirse al evento del GameManager
+        GameManager.Instance.OnStateChanged += ActualizarUI;
+        GameManager.Instance.OnTimerChanged += ActualizarTimer;
+        GameManager.Instance.OnGameOver += ShowGameOver;
 
-        restartBtn.gameObject.SetActive(false);
-        exitBtn.gameObject.SetActive(false);
+        if (nextLevel != null)
+            nextLevel.onClick.AddListener(() => GameManager.Instance.NextLevel());
+
+        if (restartBtn != null)
+            restartBtn.onClick.AddListener(() => GameManager.Instance.RestartLevel());
+
+        if (exitBtn != null)
+            exitBtn.onClick.AddListener(() => GameManager.Instance.QuitGame());
+
+        textGameOver.enabled = false;
+        textTargets.enabled = false;
+
+        if (nextLevel != null) nextLevel.gameObject.SetActive(false);
+        if (restartBtn != null) restartBtn.gameObject.SetActive(false);
+        if (exitBtn != null) exitBtn.gameObject.SetActive(false);
+
+        ActualizarUI();
     }
     void Update()
     {
-        TextTime();
-        TextScore();
+        
+    }
 
-        targetsString = GameManager.Instance.CantTargets.ToString();
-        scoreString = GameManager.Instance.Score.ToString();
+    void ActualizarTimer(float t)
+    {
+        if (GameManager.Instance.State == GameState.Menu) return;
+        if (GameManager.Instance.State == GameState.Ready)
+            textTime.text = "Ready?";
+        else
+            textTime.text = Mathf.CeilToInt(t).ToString() + "s";
+    }
 
-        if (GameManager.Instance.GameTimer <= 0 && !gameOverShown)
-        {
-            gameOverShown = true;
-
-            Invoke(nameof(ShowGameOver), 2f);
-        }
+    void ActualizarUI()
+    {
+        textScore.text = $"Score: {GameManager.Instance.Score}";
     }
 
     void ShowGameOver()
     {
-        textGameOver.text = "Game Over " + scoreString + "/" + targetsString;
+        int eliminados = GameManager.Instance.Patos + GameManager.Instance.Verduras;
+        textTargets.text = $"Patos: {GameManager.Instance.Patos}     " +
+                           $"Verduras: {GameManager.Instance.Verduras}\n" +
+                           $"Total Targets: {eliminados}/{GameManager.Instance.TotalTargets}";
+        textTargets.enabled = true;
         textGameOver.enabled = true;
 
-        restartBtn.gameObject.SetActive(true);
-        exitBtn.gameObject.SetActive(true);
+        if (nextLevel != null) nextLevel.gameObject.SetActive(true);
+        if (restartBtn != null) restartBtn.gameObject.SetActive(true);
+        if (exitBtn != null) exitBtn.gameObject.SetActive(true);
     }
 
-    void TextTime()
+    private void OnDestroy()
     {
-        if (GameManager.Instance.GameTimer > 31)
-        { 
-            textTime.text = "Ready?";
-        }
-        else
-        {
-            textTime.text = ((int)GameManager.Instance.GameTimer).ToString() + "s";
-        }
-            
-    }
-
-    void TextScore()
-    {
-        textScore.text = "Score: " + GameManager.Instance.Score.ToString();
+        if (GameManager.Instance != null)
+            GameManager.Instance.OnStateChanged -= ActualizarUI;
+            GameManager.Instance.OnTimerChanged -= ActualizarTimer;  
+            GameManager.Instance.OnGameOver -= ShowGameOver;         
     }
 }

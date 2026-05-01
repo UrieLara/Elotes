@@ -3,53 +3,53 @@ using UnityEngine;
 
 public class Spammer : MonoBehaviour
 {
-    public GameObject[] patoPrefabs;
-    public GameObject Verdura;
-    public AudioSource audioSrc_elote;
+    LevelConfig config;
+
+    public AudioSource audioSrc_verdura;
     public AudioSource audioSrc_pato;
-
-    const float tiempoParaIniciar = 30f;
-
-    [Header("Tiempo entre patos")]
-    [SerializeField] float tiempoEntrePatos = 5f;
-
-    [Header("Tiempo entre verduras")]
-    [SerializeField] float tiempoEntreVerduras = 5f;
 
     void Start()
     {
+        StartCoroutine(WaitForConfig());
+
+    }
+
+    IEnumerator WaitForConfig()
+    {
+        yield return new WaitUntil(() => GameManager.Instance !=null && GameManager.Instance.currentLevelConfig != null);
+
+        config = GameManager.Instance.currentLevelConfig;
         StartCoroutine(SpawnPatos());
         StartCoroutine(SpawnVerduras());
     }
 
     IEnumerator SpawnVerduras()
     {
-        yield return new WaitUntil(() => GameManager.Instance != null && GameManager.Instance.GameTimer <= tiempoParaIniciar);
+        yield return new WaitUntil(() => GameManager.Instance.State == GameState.Playing);
 
-        yield return new WaitForSeconds(1f);
 
-        while (GameManager.Instance != null && GameManager.Instance.GameTimer > 1f)
+        while (GameManager.Instance.State == GameState.Playing)
         {
-            Instantiate(Verdura);
+            Instantiate(config.verduraPrefab[Random.Range(0, config.verduraPrefab.Length)]);
             GameManager.Instance?.AddTargets(1);
-            audioSrc_elote?.Play();
+            audioSrc_verdura?.Play();
 
-            yield return new WaitForSeconds(tiempoEntreVerduras);
+            yield return new WaitForSeconds(config.tiempoEntreVerduras);
         }
     }
 
     IEnumerator SpawnPatos()
     {
-        yield return new WaitUntil(() => GameManager.Instance != null && GameManager.Instance.GameTimer <= tiempoParaIniciar);
+        yield return new WaitUntil(() => GameManager.Instance.State == GameState.Playing);
 
-        while (GameManager.Instance != null && GameManager.Instance.GameTimer > 1f)
+        while (GameManager.Instance.State == GameState.Playing)
         {
-            Instantiate(patoPrefabs[Random.Range(0, patoPrefabs.Length)]);
+            Instantiate(config.patoPrefabs[Random.Range(0, config.patoPrefabs.Length)]);
 
             GameManager.Instance?.AddTargets(1);
             audioSrc_pato?.Play();
 
-            yield return new WaitForSeconds(tiempoEntrePatos);
+            yield return new WaitForSeconds(config.tiempoEntrePatos);
         }
     }
 }

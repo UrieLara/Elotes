@@ -15,10 +15,11 @@ GameObject:
   - component: {fileID: 4205742828178952301}
   - component: {fileID: 5114834157276267405}
   - component: {fileID: 5878319803402067280}
-  - component: {fileID: 1441014290917191480}
+  - component: {fileID: 139745083489186114}
+  - component: {fileID: 1804183125332454333}
   m_Layer: 7
   m_Name: elote
-  m_TagString: Untagged
+  m_TagString: verdura
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -170,7 +171,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0140993595, y: 0.010397732}
+  m_Offset: {x: 0.0016658306, y: -0.017109275}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -181,7 +182,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 4.2169538, y: 3.9414687}
+  m_Size: {x: 5.957645, y: 4.748349}
   m_EdgeRadius: 0
 --- !u!114 &5114834157276267405
 MonoBehaviour:
@@ -211,9 +212,23 @@ MonoBehaviour:
   rb: {fileID: 7751533603219895558}
   col: {fileID: 4205742828178952301}
   animator: {fileID: 8411970152231210609}
-  audio_popcorn: {fileID: 1441014290917191480}
-  audio_duck: {fileID: 0}
---- !u!82 &1441014290917191480
+  floatingTextPrefab: {fileID: 2003796652380530714, guid: 2e22c86dbdbb6fd4895dfc23a956ac2f, type: 3}
+--- !u!114 &139745083489186114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8200764050268880720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8918a7fbbf5794d4788bf9a61b9e717d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 1
+  points: 1
+  hitSound: {fileID: 8300000, guid: 8ae71e5c5ffd89d4abadbb0e3f0e6db9, type: 3}
+--- !u!82 &1804183125332454333
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -223,7 +238,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 8ae71e5c5ffd89d4abadbb0e3f0e6db9, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1

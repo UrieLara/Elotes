@@ -13,12 +13,13 @@ GameObject:
   - component: {fileID: 7992994916867123436}
   - component: {fileID: 431835816414990840}
   - component: {fileID: 2216968676217393983}
+  - component: {fileID: 3872122179515612482}
   - component: {fileID: 3175703453411926556}
   - component: {fileID: 2336231952084474700}
-  - component: {fileID: 2174820546987985816}
+  - component: {fileID: 6658107513953012736}
   m_Layer: 6
   m_Name: PatoNegro
-  m_TagString: Untagged
+  m_TagString: pato
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -100,7 +101,7 @@ Animator:
   m_GameObject: {fileID: 2460717307628784352}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: 708abba8939118d48beead51a8c559fe, type: 2}
+  m_Controller: {fileID: 9100000, guid: f6ad829733d769345938ac21a528b502, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -124,7 +125,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 3175703453411926556}
-  fuerza: 5
 --- !u!114 &2216968676217393983
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -140,8 +140,22 @@ MonoBehaviour:
   rb: {fileID: 3175703453411926556}
   col: {fileID: 2336231952084474700}
   animator: {fileID: 7992994916867123436}
-  audio_popcorn: {fileID: 0}
-  audio_duck: {fileID: 2174820546987985816}
+  floatingTextPrefab: {fileID: 2003796652380530714, guid: 2e22c86dbdbb6fd4895dfc23a956ac2f, type: 3}
+--- !u!114 &3872122179515612482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2460717307628784352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8918a7fbbf5794d4788bf9a61b9e717d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+  points: 3
+  hitSound: {fileID: 8300000, guid: ce4879eea0006084483a4cba3ab3208d, type: 3}
 --- !u!50 &3175703453411926556
 Rigidbody2D:
   serializedVersion: 4
@@ -214,7 +228,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.43275106, y: 0.32097322}
   m_EdgeRadius: 0
---- !u!82 &2174820546987985816
+--- !u!82 &6658107513953012736
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -224,8 +238,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: ce4879eea0006084483a4cba3ab3208d, type: 3}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
