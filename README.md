@@ -6,11 +6,11 @@
 
 <p align="center"><i>Dale clic a los patos... y a los elotes 🌽</i></p>
 
-**Elotes** es un juego 2D inspirado en las mecánicas del clásico *Hunter Duck*. Desarrollado como proyecto para la materia **Motores de Desarrollo de Videojuegos Avanzados** (Unity).
+Un videojuego arcade que reinventa la mecánica clásica de Hunter Duck (1985) con físicas modernas, personalización y assets originales en pixel art.
 
 El objetivo es simple: acumula la mayor cantidad de puntos antes de que se acabe el tiempo. Haz clic en los patos... y también en los elotes que aparecen en pantalla.
 
-**🔗 Demo (próximamente):** [Jugar en itch.io](link-pendiente)
+**🔗 Demo:** [Jugar en itch.io](https://urielara.itch.io/elotes)
 
 ---
 
@@ -26,20 +26,15 @@ El objetivo es simple: acumula la mayor cantidad de puntos antes de que se acabe
 
 ## 🎮 Características actuales
 
-- ✅ Sistema de puntería y clic con mouse
-- ✅ Generación dinámica de patos y elotes
+- ✅ Sistema de puntería y clic con mouse (referencia de posición del mouse para mostrar objetos bajo el cursor)
+- ✅ Generación dinámica de patos y verduras
 - ✅ Sistema de puntuación (score)
 - ✅ Temporizador límite
 - ✅ Animaciones básicas
 - ✅ Feedback visual al acertar
-
-## 🟡 En desarrollo (para entrega en mayo)
-
-- 🎨 Menú principal
-- 🎨 Mejora de animaciones
-- 🎨 Assets originales (reemplazar los generados por IA)
-- 🎨 Fondo dibujado por mí
-- ⚡ Optimización: migrar de Instantiate/Destroy a **Object Pooling**
+- ✅ **Eventos en Unity** para comunicación desacoplada entre sistemas
+- ✅ **ScriptableObjects** para configurar parámetros de niveles fácilmente
+- ✅ **Corutinas** para control de tiempos (spawn, animaciones, retardos)
 
 ---
 
@@ -48,7 +43,12 @@ El objetivo es simple: acumula la mayor cantidad de puntos antes de que se acabe
 - Implementar **lógica de click detection** en Unity 2D
 - Manejar **generación dinámica de objetos** (Instantiate/Destroy)
 - Sistema de **tiempo y puntuación**
-- Identificar cuellos de botella: el uso excesivo de Instantiate/Destroy afecta el rendimiento → próximo paso: **Object Pooling**
+- Uso de **eventos** para desacoplar sistemas
+- **ScriptableObjects** como contenedores de datos de niveles
+- **Corutinas** (`yield return new WaitForSeconds`) para acciones temporizadas
+- Tomar la **referencia del mouse** para instanciar objetos donde se posiciona
+- **Cuellos de botella:** Instantiate/Destroy afecta rendimiento → próximo paso: **Object Pooling**
+- **Primeros pasos en pixel art** (personajes, entorno y elementos UI)
 
 ---
 
@@ -58,5 +58,5 @@ El objetivo es simple: acumula la mayor cantidad de puntos antes de que se acabe
    ```bash
    git clone https://github.com/UrieLara/Elotes
 2. Abre Unity (versión recomendada: 2022.3 o superior)
-3. Abre la escena principal desde Assets/Scenes/
+3. Abre la escena principal (MainMenu) desde Assets/Scenes/
 4. Presiona Play ▶️
